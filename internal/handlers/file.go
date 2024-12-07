@@ -18,6 +18,9 @@ func NewFileHandler(service ports.FileService) *FileHandler {
 }
 
 func (h *FileHandler) Register(mux *http.ServeMux) {
+	fs := http.FileServer(http.Dir("static"))
+	mux.Handle("/", fs)
+
 	mux.HandleFunc("/v1/files", h.enableCORS(h.handleFiles))
 }
 
