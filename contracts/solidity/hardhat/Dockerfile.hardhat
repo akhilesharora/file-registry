@@ -1,0 +1,17 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache wget curl bash
+
+# Copy package files
+COPY package.json package-lock.json* ./
+RUN npm install
+
+# Copy all necessary files
+COPY . .
+
+RUN npx hardhat compile
+
+EXPOSE 8545
+CMD ["npx", "hardhat", "node", "--hostname", "0.0.0.0"]

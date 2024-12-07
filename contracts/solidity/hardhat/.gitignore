@@ -1,0 +1,26 @@
+# Node modules and lock files
+node_modules/
+*.log
+
+# Hardhat build artifacts
+artifacts/
+cache/
+
+# Compiled contract artifacts (if any)
+build/
+
+# Environment variables
+.env
+.env.*
+
+# Coverage outputs
+coverage/
+coverage.json
+coverage-final.json
+nyc_output/
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
