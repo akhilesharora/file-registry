@@ -59,8 +59,6 @@ docker-up: env-setup
 	@docker-compose up --build -d hardhat
 	@echo "Waiting for Hardhat node to become ready..."
 	@sleep 5
-	@echo "Deploying the contract via Hardhat..."
-	@docker-compose exec -T hardhat npx hardhat run scripts/deploy.js --network localhost
 	@echo "Starting remaining services..."
 	@docker-compose up --build --remove-orphans
 
