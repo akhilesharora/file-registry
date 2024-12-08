@@ -26,7 +26,11 @@ run: build
 
 test:
 	@echo "Running tests..."
-	@go test -v ./...
+	@go test -v ./internal/... ./config/...
+
+test-integration:
+	@echo "Running integration tests..."
+	@go test -v ./integration/...
 
 env-setup:
 	@if [ ! -f .env ]; then \
