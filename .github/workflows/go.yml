@@ -1,0 +1,52 @@
+name: Go
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.3'
+
+      - name: Install Solidity Compiler
+        run: |
+          sudo add-apt-repository ppa:ethereum/ethereum
+          sudo apt-get update
+          sudo apt-get install solc
+
+      - name: Build Contract
+        run: make contract
+
+      - name: Build Go Binary
+        run: make build
+
+      - name: Run Unit Tests
+        run: make test
+
+      - name: Start Services
+        run: |
+          make docker-up
+          sleep 5
+          docker-compose ps
+
+      - name: Run Integration Tests
+        run: make test-integration
+
+      - name: Docker Logs on Failure
+        if: failure()
+        run: docker-compose logs
+
+      - name: Cleanup
+        if: always()
+        run: | 
+          make docker-down
+          make clean
