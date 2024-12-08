@@ -104,7 +104,7 @@ This project implements a Hexagonal Architecture (Ports and Adapters) to achieve
 
 3. **Check services:**
     - API: [http://localhost:8090](http://localhost:8090)
-    - IPFS: [http://localhost:5001](http://localhost:5001)
+    - IPFS: [http://localhost:5001/webui](http://localhost:5001/webui)
     - Ethereum (Hardhat): http://localhost:8545
 
 ### Manual Setup (Without Docker)
