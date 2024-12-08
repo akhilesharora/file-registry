@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  hardhat:
+    build:
+      context: ./contracts/solidity/hardhat
+      dockerfile: Dockerfile.hardhat
+    ports:
+      - "8545:8545"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://hardhat:8545"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./.env:/app/.env
+
+  ipfs:
+    image: ipfs/kubo:latest
+    ports:
+      - "4001:4001"
+      - "4001:4001/udp"
+      - "5001:5001"
+      - "8080:8080"
+    environment:
+      - IPFS_PROFILE=server
+    healthcheck:
+      test: [ "CMD", "ipfs", "id" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT}:8090"
+    environment:
+      - ETH_NODE_URL=http://hardhat:8545
+      - IPFS_NODE_URL=http://ipfs:5001
+      - CONTRACT_ADDRESS=${CONTRACT_ADDRESS}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - PORT=${PORT}
+    depends_on:
+      hardhat:
+        condition: service_healthy
+      ipfs:
+        condition: service_healthy
+    volumes:
+      - ./.env:/app/.env
+
+volumes:
+  ipfs_data:
