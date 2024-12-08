@@ -64,7 +64,7 @@ docker-up: env-setup
 	@echo "Waiting for Hardhat node to become ready..."
 	@sleep 5
 	@echo "Starting remaining services..."
-	@docker-compose up --build --remove-orphans
+	@docker-compose up --build --remove-orphans -d
 
 docker-down:
 	@echo "Stopping and removing all services..."
